@@ -9,11 +9,11 @@ class ExerciseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_exercise)
 
-        setSupportActionBar(tb_exercise_activity)
+        setSupportActionBar(toolbar_exercise_activity)
         val actionbar = supportActionBar
         if (actionbar != null) {
             actionbar.setDisplayHomeAsUpEnabled(true)
         }
-        tb_exercise_activity.setNavigationOnClickListener { onBackPressed() }
+        toolbar_exercise_activity.setNavigationOnClickListener { onBackPressed() }
     }
 }
