@@ -78,6 +78,16 @@
         android:visibility="gone"
         tools:visibility="visible">
 
+        <ImageView
+            android:id="@+id/ivImage"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/image"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_jumping_jacks"
+            />
+
         <TextView
             android:id="@+id/tvExerciseName"
             android:layout_width="wrap_content"
@@ -101,7 +111,7 @@
                 android:layout_gravity="center"
                 android:background="@drawable/circular_progress_gray"
                 android:indeterminate="false"
-                android:max="10"
+                android:max="30"
                 android:progress="100"
                 android:progressDrawable="@drawable/circular_progress_bar"
                 android:rotation="-90" />
