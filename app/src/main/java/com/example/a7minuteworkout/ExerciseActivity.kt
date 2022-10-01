@@ -16,6 +16,8 @@ class ExerciseActivity : AppCompatActivity() {
     private var exerciseProgress = 0
     private var exerciseTimerDuration: Long = 30
 
+    private var exerciseList: ArrayList<ExerciseModel>? = null
+    private var currentExercisePosition = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +30,7 @@ class ExerciseActivity : AppCompatActivity() {
         }
         toolbar_exercise_activity.setNavigationOnClickListener { onBackPressed() }
         setupRestView()
+        exerciseList = Constants.defaultExerciseList()
     }
 
     override fun onDestroy() {
@@ -48,8 +51,7 @@ class ExerciseActivity : AppCompatActivity() {
             }
 
             override fun onFinish() {
-//                Toast.makeText(this@ExerciseActivity, "Timer is finished", Toast.LENGTH_SHORT)
-//                    .show()
+                currentExercisePosition++
                 setupExerciseView()
             }
         }.start()
