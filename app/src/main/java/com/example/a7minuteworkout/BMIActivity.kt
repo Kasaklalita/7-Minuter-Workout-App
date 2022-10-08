@@ -10,6 +10,12 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 
 class BMIActivity : AppCompatActivity() {
+
+    val METRIC_UNITS_VIEW = "METRIC_UNITS_VIEW"
+    val US_UNITS_VIEW = "US_UNITS_VIEW"
+
+    var currentVisibleView: String = METRIC_UNITS_VIEW
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bmiactivity)
@@ -38,6 +44,44 @@ class BMIActivity : AppCompatActivity() {
                     .show()
             }
         }
+
+        makeVisibleMetricUnitsView()
+        rgUnits.setOnCheckedChangeListener { radioGroup, checkedId ->
+            if (checkedId == R.id.rbMetricUnits) {
+                makeVisibleMetricUnitsView()
+            } else {
+                makeVisibleUsUnitsView()
+            }
+        }
+    }
+
+    private fun makeVisibleMetricUnitsView() {
+        currentVisibleView = METRIC_UNITS_VIEW // Current View is updated here.
+        llMetricUnitsView.visibility = View.VISIBLE // METRIC UNITS VIEW is Visible
+        llUsUnitsView.visibility = View.GONE // US UNITS VIEW is hidden
+
+        etMetricUnitHeight.text!!.clear() // height value is cleared if it is added.
+        etMetricUnitWeight.text!!.clear() // weight value is cleared if it is added.
+
+        tvYourBMI.visibility = View.INVISIBLE // Result is cleared and the labels are hidden
+        tvBMIValue.visibility = View.INVISIBLE // Result is cleared and the labels are hidden
+        tvBMIType.visibility = View.INVISIBLE // Result is cleared and the labels are hidden
+        tvBMIDescription.visibility = View.INVISIBLE // Result is cleared and the labels are hidden
+    }
+
+    private fun makeVisibleUsUnitsView() {
+        currentVisibleView = US_UNITS_VIEW // Current View is updated here.
+        llMetricUnitsView.visibility = View.GONE // METRIC UNITS VIEW is hidden
+        llUsUnitsView.visibility = View.VISIBLE // US UNITS VIEW is Visible
+
+        etUsUnitWeight.text!!.clear() // weight value is cleared.
+        etUsUnitHeightFeet.text!!.clear() // height feet value is cleared.
+        etUsUnitHeightInch.text!!.clear() // height inch is cleared.
+
+        tvYourBMI.visibility = View.INVISIBLE // Result is cleared and the labels are hidden
+        tvBMIValue.visibility = View.INVISIBLE // Result is cleared and the labels are hidden
+        tvBMIType.visibility = View.INVISIBLE // Result is cleared and the labels are hidden
+        tvBMIDescription.visibility = View.INVISIBLE // Result is cleared and the labels are hidden
     }
 
     private fun validateMetricUnits(): Boolean {
@@ -90,10 +134,11 @@ class BMIActivity : AppCompatActivity() {
             bmiDescription = "OMG! You are in a very dangerous condition! Act now!"
         }
 
-        tvYourBMI.visibility = View.VISIBLE
-        tvBMIValue.visibility = View.VISIBLE
-        tvBMIType.visibility = View.VISIBLE
-        tvBMIDescription.visibility = View.VISIBLE
+        llDisplayBMIResult.visibility = View.VISIBLE
+//        tvYourBMI.visibility = View.VISIBLE
+//        tvBMIValue.visibility = View.VISIBLE
+//        tvBMIType.visibility = View.VISIBLE
+//        tvBMIDescription.visibility = View.VISIBLE
 
         // This is used to round the result value to 2 decimal values after "."
         val bmiValue = BigDecimal(bmi.toDouble()).setScale(2, RoundingMode.HALF_EVEN).toString()
