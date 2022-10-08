@@ -33,15 +33,41 @@ class BMIActivity : AppCompatActivity() {
         }
 
         btnCalculateUnits.setOnClickListener {
-            if (validateMetricUnits()) {
-                val heightValue: Float = etMetricUnitHeight.text.toString().toFloat() / 100
-                val weightValue: Float = etMetricUnitWeight.text.toString().toFloat()
-                val bmi = weightValue / (heightValue * heightValue)
+            if (currentVisibleView.equals(METRIC_UNITS_VIEW)) {
+                if (validateMetricUnits()) {
+                    val heightValue: Float = etMetricUnitHeight.text.toString().toFloat() / 100
+                    val weightValue: Float = etMetricUnitWeight.text.toString().toFloat()
+                    val bmi = weightValue / (heightValue * heightValue)
 
-                displayBMIResult(bmi)
+                    displayBMIResult(bmi)
+                } else {
+                    Toast.makeText(
+                        this@BMIActivity,
+                        "Please enter valid values.",
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
             } else {
-                Toast.makeText(this@BMIActivity, "Please enter valid values.", Toast.LENGTH_SHORT)
-                    .show()
+                if (validateUsUnits()) {
+                    val usUnitHeightValueFeet: String = etUsUnitHeightFeet.text.toString()
+                    val usUnitHeightValueInch: String = etUsUnitHeightInch.text.toString()
+                    val usUnitWightValue: Float = etUsUnitWeight.text.toString().toFloat()
+
+                    val heightValue =
+                        usUnitHeightValueInch.toFloat() + usUnitHeightValueFeet.toFloat() * 12
+
+                    val bmi = 703 * (usUnitWightValue / (heightValue * heightValue))
+
+                    displayBMIResult(bmi)
+                } else {
+                    Toast.makeText(
+                        this@BMIActivity,
+                        "Please enter valid values.",
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
             }
         }
 
@@ -95,6 +121,19 @@ class BMIActivity : AppCompatActivity() {
         return isValid
     }
 
+    private fun validateUsUnits(): Boolean {
+        var isValid = true
+        if (etUsUnitWeight.text.toString().isEmpty()) {
+            isValid = false
+        } else if (etUsUnitHeightInch.text.toString().isEmpty()) {
+            isValid = false
+        } else if (etUsUnitHeightFeet.text.toString().isEmpty()) {
+            isValid = false
+        }
+
+        return isValid
+    }
+
     private fun displayBMIResult(bmi: Float) {
         val bmiLabel: String
         val bmiDescription: String
@@ -135,10 +174,10 @@ class BMIActivity : AppCompatActivity() {
         }
 
         llDisplayBMIResult.visibility = View.VISIBLE
-//        tvYourBMI.visibility = View.VISIBLE
-//        tvBMIValue.visibility = View.VISIBLE
-//        tvBMIType.visibility = View.VISIBLE
-//        tvBMIDescription.visibility = View.VISIBLE
+        tvYourBMI.visibility = View.VISIBLE
+        tvBMIValue.visibility = View.VISIBLE
+        tvBMIType.visibility = View.VISIBLE
+        tvBMIDescription.visibility = View.VISIBLE
 
         // This is used to round the result value to 2 decimal values after "."
         val bmiValue = BigDecimal(bmi.toDouble()).setScale(2, RoundingMode.HALF_EVEN).toString()
